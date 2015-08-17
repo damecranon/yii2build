@@ -6,10 +6,12 @@ use Yii;
 use backend\models\Role;
 use backend\models\Status;
 use backend\models\UserType;
-use common\models\User;
+
 
 class ValueHelpers
 {
+
+
     public static function roleMatch($role_name)
     {
         $userHasRoleName = Yii::$app->user->identity->role->role_name;
@@ -22,7 +24,7 @@ class ValueHelpers
             $userRoleValue = Yii::$app->user->identity->role->role_name;
             return isset($userRoleValue) ? $userRoleValue : false;
         } else {
-            $user = User::findone($userId);
+            $user = User::findOne($userId);
             $userRoleValue = $user->role->role_name;
             return isset($userRoleValue) ? $userRoleValue : false;
         }
