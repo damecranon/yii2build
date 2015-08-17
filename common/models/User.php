@@ -30,9 +30,13 @@ use yii\helpers\Url;
  * @property integer $status_id
  * @property integer $user_type_id
  * @property string $password write-only password
+ *
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+    //property for Role
+
+
     const STATUS_ACTIVE = 1;
 
     /**
