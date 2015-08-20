@@ -20,7 +20,7 @@ class Status extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%status}}';
+        return 'status';
     }
 
     /**
@@ -29,8 +29,8 @@ class Status extends ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'status_name', 'status_value'], 'required'],
-            [['id', 'status_value'], 'integer'],
+            [['status_name', 'status_value'], 'required'],
+            [['status_value'], 'integer'],
             [['status_name'], 'string', 'max' => 45]
         ];
     }
