@@ -13,6 +13,8 @@ use common\models\User;
  * @property integer $id
  * @property string $role_name
  * @property string $role_value
+ *
+ *
  */
 class Role extends ActiveRecord
 {
@@ -21,7 +23,7 @@ class Role extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%role}}';
+        return 'role';
     }
 
     /**
@@ -30,9 +32,9 @@ class Role extends ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'role_name', 'role_value'], 'required'],
-            [['id'], 'integer'],
-            [['role_name', 'role_value'], 'string', 'max' => 45]
+            [['role_name', 'role_value'], 'required'],
+            [['role_value'], 'integer'],
+            [['role_name'], 'string', 'max' => 45]
         ];
     }
 
