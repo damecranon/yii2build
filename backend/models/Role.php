@@ -38,6 +38,7 @@ class Role extends ActiveRecord
         ];
     }
 
+
     /**
      * @inheritdoc
      */
