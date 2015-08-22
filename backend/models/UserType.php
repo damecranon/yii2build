@@ -20,7 +20,7 @@ class UserType extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%user_type}}';
+        return 'user_type';
     }
 
     /**
