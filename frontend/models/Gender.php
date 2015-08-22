@@ -20,7 +20,7 @@ class Gender extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%gender}}';
+        return 'gender';
     }
 
     /**
@@ -29,7 +29,7 @@ class Gender extends ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'gender_name'], 'required'],
+            [['gender_name'], 'required'],
             [['id'], 'integer'],
             [['gender_name'], 'string', 'max' => 45]
         ];
@@ -42,7 +42,7 @@ class Gender extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'gender_name' => 'Gender Name',
+            'gender_name' => 'Gender',
         ];
     }
 
