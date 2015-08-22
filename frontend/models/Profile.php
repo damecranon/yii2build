@@ -31,8 +31,27 @@ class Profile extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%profile}}';
+        return 'profile';
     }
+
+    /**
+     * behaviors
+     */
+
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => 'yii\behaviors\TimestampBehavior',
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ],
+                'value' => new Expression('NOW()'),
+            ],
+        ];
+    }
+
 
     /**
      * @inheritdoc
@@ -40,14 +59,12 @@ class Profile extends ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'user_id', 'gender_id'], 'required'],
-            [['id', 'user_id', 'gender_id'], 'integer'],
-            [['gender_id'], 'in', 'range' => array_keys($this->getGenderList())],
+            [['user_id', 'gender_id'], 'required'],
+            [['user_id', 'gender_id'], 'integer'],
+            [['gender_id'],'in', 'range'=>array_keys($this->getGenderList())],
             [['first_name', 'last_name'], 'string'],
-            [['birthdate', 'created_at', 'updated_at'], 'safe'],
-            [['birthdate'], 'date', 'format' => 'yyyy-M-d'],
-
-
+            [['birthdate'], 'date', 'format'=>'php:Y-m-d'],
+            [['birthdate', 'created_at', 'updated_at'], 'safe']
         ];
     }
 
@@ -65,28 +82,13 @@ class Profile extends ActiveRecord
             'gender_id' => 'Gender ID',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
-
+            'genderName' => Yii::t('app', 'Gender'),
+            'userLink' => Yii::t('app', 'User'),
+            'profileIdLink' => Yii::t('app', 'Profile'),
         ];
     }
 
-    /**
-     * behavior to control the time stamp, don't forget to use statement for expression
-     *
-     */
 
-    public function behaviors()
-    {
-        return [
-            'timestamp' => [
-                'class' => 'yii\behavior\TimeStampBehavior',
-                'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
-                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
-                ],
-                'value' => new Expression('Now()'),
-            ],
-        ];
-    }
 
     /**
      * @return \yii\db\ActiveQuery
@@ -99,19 +101,22 @@ class Profile extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+
     public function getGenderName()
     {
-       return $this->gender->gender_name;
+        return $this->gender->gender_name;
     }
 
     /**
-     * Get the list of genders from the dropdown
-     *
+     * get list of genders for dropdown
      */
-    public function getGenderList()
+
+    public static function getGenderList()
     {
+
         $droptions = Gender::find()->asArray()->all();
         return ArrayHelper::map($droptions, 'id', 'gender_name');
+
     }
 
     /**
@@ -125,17 +130,17 @@ class Profile extends ActiveRecord
 
     /**
      * @get Username
-     *
      */
-     public function getUserName()
-     {
-         return $this->user->username;
-     }
+
+    public function getUsername()
+    {
+        return $this->user->username;
+    }
 
     /**
      * @getUserId
-     *
      */
+
     public function getUserId()
     {
         return $this->user ? $this->user->id : 'none';
@@ -143,26 +148,23 @@ class Profile extends ActiveRecord
 
     /**
      * @getUserLink
-     *
      */
 
     public function getUserLink()
     {
-        $url = Url::to(['user/view', 'id' => $this->UserId]);
+        $url = Url::to(['user/view', 'id'=>$this->UserId]);
         $options = [];
         return Html::a($this->getUserName(), $url, $options);
     }
 
     /**
      * @getProfileLink
-     *
      */
 
-    public function getProfileLink()
+    public function getProfileIdLink()
     {
-
+        $url = Url::to(['profile/update', 'id'=>$this->id]);
+        $options = [];
+        return Html::a($this->id, $url, $options);
     }
-
-
-
 }
